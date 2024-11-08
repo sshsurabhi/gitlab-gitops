@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: gateway-config
+data:
+  USERS_SERVICE_URL: {{ .Values.config.USERS_SERVICE_URL }}
+  ORDERS_SERVICE_URL: {{ .Values.config.ORDERS_SERVICE_URL }}

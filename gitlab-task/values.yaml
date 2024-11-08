@@ -1,0 +1,18 @@
+image:
+  gateway: surabhiharsha5/k-api-gateway:latest
+  users: surabhiharsha5/k-users:latest
+  orders: surabhiharsha5/k-orders:latest
+
+replicaCount: 2
+
+service:
+  gatewayservicetype: NodePort
+  type: ClusterIP
+  gatewayPort: 8001
+  usersPort: 8002
+  ordersPort: 8003
+  gatewayNodePort: 30000
+
+config:
+  USERS_SERVICE_URL: "http://users-service.default.svc.cluster.local:8002"
+  ORDERS_SERVICE_URL: "http://orders-service.default.svc.cluster.local:8003"

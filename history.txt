@@ -1,0 +1,326 @@
+    1  cd /etc/update-motd.d
+    2  ls
+    3  rm 99-dst-welcome-linux-bash
+    4  sudo su
+    5  cd
+    6  vim .bash_history 
+    7  exit
+    8  tmux 
+    9  exit
+   10  sudo apt update
+   11  sudo apt up
+   12  sudo apt update
+   13  sudo apt autoremove
+   14  sudo apt autoclean
+   15  sudo apt clean
+   16  docker version
+   17  curl -L "https://packages.gitlab.com/install/repositories/runner/gitlab-runner/script.deb.sh" | sudo bash
+   18  sudo apt-get install gitlab-runner
+   19  apt-cache madison gitlab-runner
+   20  sudo gitlab-runner -version
+   21  sudo gitlab-runner status
+   22  sudo gitlab-runner stop
+   23  sudo gitlab-runner status
+   24  sudo gitlab-runner restart
+   25  sudo gitlab-runner status
+   26  ls /home/
+   27  sudo visudo
+   28  sudo gitlab-runner register  --url https://gitlab.com  --token glrt-t3_TtpCyoB-3H-orpqhGVxa
+   29  kubectl version
+   30  curl -sfL https://get.k3s.io | sh -s - --write-kubeconfig-mode 644
+   31  kubectl version
+   32  export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
+   33  sudo cp /etc/rancher/k3s/k3s.yaml ~/.kube/config
+   34  sudo chown $(whoami) ~/.kube/config
+   35  export KUBECONFIG=~/.kube/config
+   36  kubectl get nodes
+   37  kubectl version
+   38  sudo systemctl status k3s
+   39  curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+   40  chmod 700 get_helm.sh
+   41  ./get_helm.sh
+   42  helm version
+   43  kubectl version
+   44  sudo usermod -aG docker gitlab-runner
+   45  docker login
+   46  helm repo add gitlab https://charts.gitlab.io
+   47  helm repo update
+   48  helm upgrade --install gitlab-dst-agent gitlab/gitlab-agent     --namespace gitlab-agent-gitlab-dst-agent     --create-namespace     --set config.token=glagent-YBDtUV2Z3znKNa-nHsoLKUTASGeec4QCJ6iJBhExHCmYy_37RQ     --set config.kasAddress=wss://kas.gitlab.com
+   49  git clone git@gitlab.com:SaiSriHarsha/gitlab-devops.git
+   50  ssh-keygen
+   51  cat ~/.ssh/id_rsa.pub 
+   52  git clone git@gitlab.com:SaiSriHarsha/gitlab-devops.git
+   53  cat ~/.docker/config.json
+   54  cd gitlab-devops/
+   55  ls
+   56  git status
+   57  git add .
+   58  git commit -m 'ci file updated'
+   59  git push
+   60  git add .
+   61  git commit -m 'ci file updated'
+   62  git push
+   63  git add .
+   64  git commit -m 'ci file updated'
+   65  git push
+   66  kubectl get all -n dev
+   67  helm uninstall gitlab-implement -n dev
+   68  kubectl get all -n dev
+   69  kubectl get pods -n dev
+   70  helm install gitlab-implement gitlab-task --namespace dev --create-namespace
+   71  kubectl get pods -n dev
+   72  kubectl get all -n dev
+   73  helm uninstall gitlab-implement -n dev
+   74  kubectl get all -n dev
+   75  git add .
+   76  git commit -m 'ci file updated'
+   77  git push
+   78  kubectl get all -n dev
+   79  helm uninstall gitlab-implement -n dev
+   80  kubectl get all -n dev
+   81  git add .
+   82  git commit -m 'ci file updated'
+   83  git push
+   84  git add .
+   85  git commit -m 'ci file updated'
+   86  git push
+   87  git add .
+   88  git commit -m 'ci file updated'
+   89  git push
+   90  git branch dev
+   91  git checkout -b dev
+   92  git push origin dev
+   93  git checkout -b QA
+   94  git push origin dev
+   95  git push origin QA
+   96  git checkout -b prod
+   97  git push origin prod
+   98  git checkout -b staging
+   99  git push origin staging
+  100  kubectl get all -n dev
+  101  helm uninstall gitlab-implement -n dev
+  102  git add .
+  103  git commit -m 'ci file updated'
+  104  git push
+  105  git branch
+  106  git checkout -b main
+  107  git branch
+  108  git checkout main
+  109  git status
+  110  git add .
+  111  git commit -m 'ci file updated'
+  112  git push origin main
+  113  git add .
+  114  git commit -m 'ci file updated'
+  115  git push origin main
+  116  git add .
+  117  git commit -m 'ci file updated'
+  118  git push origin main
+  119  git add .
+  120  git commit -m 'ci file updated'
+  121  git push origin dev
+  122  git chekout dev
+  123  git checkout dev
+  124  git status
+  125  git add .
+  126  git commit -m 'ci file updated'
+  127  git push origin dev
+  128  helm uninstall gitlab-implement -n dev
+  129  helm uninstall gitlab-implement -n main
+  130  git checkout
+  131  git checkout dev
+  132  git status
+  133  git add .
+  134  git push origin dev
+  135  git commit -m 'ci file updated'
+  136  git push origin dev
+  137  git add .
+  138  git commit -m 'ci file updated'
+  139  git push origin dev
+  140  git add .
+  141  git commit -m 'ci file updated'
+  142  git push origin dev
+  143  git add .
+  144  git commit -m 'ci file updated'
+  145  git push origin dev
+  146  git add .
+  147  git commit -m 'ci file updated'
+  148  git push origin dev
+  149  helm uninstall gitlab-implement -n dev
+  150  git status
+  151  git checkout main
+  152  kubectl get --all-namespaces
+  153  kubectl get all -namespaces
+  154  kubectl get namespaces
+  155  helm uninstall gitlab-implement -n dev
+  156  kubectl delete namespace dev
+  157  kubectl get namespaces
+  158  kubectl delete namespace main
+  159  git status
+  160  git add .
+  161  git commit -m 'ci file updated'
+  162  git push origin main
+  163  git add .
+  164  git commit -m 'ci file updated'
+  165  git push origin main
+  166  kubectl get namespaces
+  167  git add .
+  168  git commit -m 'ci file updated'
+  169  git push origin main
+  170  kubectl get namespaces
+  171  helm uninstall gitlab-implement -n main
+  172  kubectl delete namespace main
+  173  kubectl get namespaces
+  174  git add .
+  175  git commit -m 'ci file updated'
+  176  git push origin main
+  177  kubectl get all -n main
+  178  helm uninstall gitlab-implement -n main
+  179  kubectl get all -n main
+  180  cd gitlab-devops/
+  181  git status
+  182  kubectl get all -n main
+  183  kubectl get namespaces
+  184  kubectl delete -n main
+  185  kubectl delete namespace main
+  186  git status
+  187  git add .
+  188  git commit -m 'ci file updated for main branch'
+  189  git push
+  190  kubectl get all -n main
+  191  kubectl delete namespace main
+  192  kubectl get all -n main
+  193  git status
+  194  git checkout -b dev
+  195  git checkout dev
+  196  git status
+  197  git checkout dev
+  198  git commit -m 'ci file updated for main branch'
+  199  git add .
+  200  git commit -m 'ci file updated for main branch'
+  201  git push
+  202  git checkout dev
+  203  git status
+  204  cd gitlab-devops/
+  205  ls
+  206  git status
+  207  helm install gitlab-implement gitlab-task --namespace dev --create-namespace
+  208  kubectl get all -n dev
+  209  curl 3.249.16.188:30000
+  210  curl http://localhost:30000/docs
+  211  kubectl delete namespace dev
+  212  helm install gitlab-implement gitlab-task --namespace dev --create-namespace
+  213  kubectl delete namespace dev
+  214  helm install gitlab-implement gitlab-task --namespace dev --create-namespace
+  215  kubectl get all -n dev
+  216  kubectl delete namespace dev
+  217  helm install gitlab-implement gitlab-task --namespace prod --create-namespace --values=values-prod.yaml
+  218  helm install gitlab-implement gitlab-task --namespace prod --create-namespace --values=gitlab-task/values-prod.yaml
+  219  kubectl get all -n dev
+  220  kubectl get all -n prod
+  221  kubectl delete namespace prod
+  222  helm install gitlab-implement gitlab-task --namespace prod --create-namespace --values=gitlab-task/values-prod.yaml
+  223  helm install gitlab-implement gitlab-task --namespace qa --create-namespace --values=gitlab-task/values-qa.yaml
+  224  kubectl get all -n prod
+  225  kubectl get all -n qa
+  226  kubectl get all -n prod
+  227  kubectl get all -n qa
+  228  kubectl get all -n prod
+  229  kubectl get all -n qa
+  230  kubectl delete namespace prod
+  231  kubectl delete namespace qa
+  232  git status
+  233  git add .
+  234  git commit -m 'ci file updated for dev branch'
+  235  git push
+  236  git push origin dev
+  237  git status
+  238  git check
+  239  git checkout
+  240  git push origin dev
+  241  git checkout main
+  242  git checkout dev
+  243  git checkout main
+  244  git checkout dev
+  245  git status
+  246  git add .
+  247  git commit -m 'values files updated for main branch'
+  248  git push
+  249  git checkout dev
+  250  git checkout main
+  251  git checkout dev
+  252  git status
+  253  git add .
+  254  git commit -m 'ci file updated for main branch'
+  255  git push
+  256  kubectl get namespaces
+  257  git status
+  258  git add .
+  259  git commit -m 'ci file updated for main branch'
+  260  git push
+  261  git add .
+  262  git commit -m 'ci file updated for main branch'
+  263  git push
+  264  cd gitlab-devops/
+  265  git status
+  266  kubectl get namespaces
+  267  kubectl delete namespace main
+  268  git status
+  269  git add .
+  270  git commit -m 'Updated CI file. Running for Main Branch'
+  271  git push
+  272  git add .
+  273  git commit -m 'Updated CI file. Running for Main Branch'
+  274  git push
+  275  git add .
+  276  git commit -m 'Updated CI file. Running for Main Branch'
+  277  git push
+  278  kubectl get namespaces
+  279  kubectl delete namespace main
+  280  git add .
+  281  git commit -m 'Updated CI file. Running for Main Branch'
+  282  git push
+  283  kubectl get all -n main
+  284  kubectl delete namespace main
+  285  git add .
+  286  git commit -m 'Updated CI file. Running for Main Branch'
+  287  git push
+  288  git add .
+  289  git commit -m 'Updated CI file. Running for Main Branch'
+  290  git push
+  291  git status
+  292  git add .
+  293  git commit -m 'Updated CI file. Running for Main Branch'
+  294  git push
+  295  git add .
+  296  git commit -m 'Updated CI file. Running for Main Branch'
+  297  git push
+  298  kubectl get all -n main
+  299  git push
+  300  git status
+  301  git add .
+  302  git commit -m 'Updated CI file. Running for Main Branch'
+  303  git push
+  304  kubectl get all -n main
+  305  kubectl delete namespace main
+  306  kubectl get all -n main
+  307  cd gitlab-devops/
+  308  docker-compose up -d
+  309  sudo apt update -y
+  310  sudo apt upgrade -y
+  311  sudo apt  install docker-compose
+  312  docker-compose up -d
+  313  docker ps
+  314  docker-compose down
+  315  docker-compose up -d
+  316  docker ps
+  317  docker-compose down
+  318  cd gitlab-devops/
+  319  ls
+  320  nano .gitignore
+  321  ls -a
+  322  nano .gitignore
+  323  rm -rf .git
+  324  git init
+  325  nano .gitignore
+  326  history > history.txt

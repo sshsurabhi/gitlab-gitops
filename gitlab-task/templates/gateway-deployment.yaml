@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gateway
+  labels:
+    app: gateway
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: gateway
+  template:
+    metadata:
+      labels:
+        app: gateway
+    spec:
+      containers:
+        - name: gateway
+          image: {{ .Values.image.gateway }}
+          command: ["sh", "-c", "uvicorn main:app --reload --host 0.0.0.0", "--port", "8000"]
+          ports:
+            - containerPort: {{ .Values.service.gatewayPort }}
+          envFrom:
+            - configMapRef:
+                name: gateway-config
+          volumeMounts:
+            - mountPath: /app
+              name: gateway-volume
+      volumes:
+        - name: gateway-volume
+          persistentVolumeClaim:
+            claimName: gateway-pvc
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: gateway-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi

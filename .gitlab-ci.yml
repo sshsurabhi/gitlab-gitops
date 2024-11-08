@@ -1,0 +1,238 @@
+stages:
+  - build
+  - deploy
+
+variables:
+  DOCKER_USERNAME: $DOCKER_USERNAME
+  DOCKER_PASSWORD: $DOCKER_PASSWORD
+  IMAGE_TAG: latest
+
+before_script:
+  - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
+  - export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
+
+build:
+  stage: build
+  script:
+    - docker build -t $DOCKER_USERNAME/k-api-gateway:$IMAGE_TAG ./gateway
+    - docker build -t $DOCKER_USERNAME/k-users:$IMAGE_TAG ./users
+    - docker build -t $DOCKER_USERNAME/k-orders:$IMAGE_TAG ./orders
+    - docker push $DOCKER_USERNAME/k-api-gateway:$IMAGE_TAG
+    - docker push $DOCKER_USERNAME/k-users:$IMAGE_TAG
+    - docker push $DOCKER_USERNAME/k-orders:$IMAGE_TAG
+
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+    - if: '$CI_COMMIT_BRANCH == "dev"'
+    - if: '$CI_COMMIT_BRANCH == "prod"'
+    # - if: '$CI_COMMIT_BRANCH == "QA'
+    # - if: '$CI_COMMIT_BRANCH == "staging"'
+
+  # rules:
+  #   - if: '$CI_COMMIT_BRANCH == "main"'
+    
+
+# .deploy_template:
+#   stage: deploy
+#   script:
+#     - echo "Deploying to the $TARGET_ENV environment"
+#     - helm install gitlab-implement gitlab-task --namespace $TARGET_ENV --create-namespace
+#     - kubectl get all -n $TARGET_ENV
+
+# deploy_main:
+#   extends: .deploy_template
+#   variables:
+#     TARGET_ENV: "main"
+#   rules:
+#     - if: '$CI_COMMIT_BRANCH == "main"'
+#       when: manual
+
+# deploy_dev:
+#   extends: .deploy_template
+#   variables:
+#     TARGET_ENV: "dev"
+#   rules:
+#     - if: '$CI_COMMIT_BRANCH == "dev"'
+#       when: manual
+deploy:
+  stage: deploy
+  script:
+    - echo "Deploying to the $CI_COMMIT_REF_NAME environment"
+    - |
+      if [[ "$CI_COMMIT_REF_NAME" == "dev" ]]; then
+        VALUES_FILE="gitlab-task/values-dev.yaml"
+      elif [[ "$CI_COMMIT_REF_NAME" == "staging" ]]; then
+        VALUES_FILE="gitlab-task/values-staging.yaml"
+      elif [[ "$CI_COMMIT_REF_NAME" == "prod" ]]; then
+        VALUES_FILE="gitlab-task/values-prod.yaml"
+      else
+        VALUES_FILE="gitlab-task/values.yaml"
+      fi
+    - echo "Using values file:" $VALUES_FILE
+    - helm upgrade gitlab-implement gitlab-task --namespace $CI_COMMIT_REF_NAME --create-namespace -f $VALUES_FILE
+    - kubectl get all -n $CI_COMMIT_REF_NAME
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+      when: manual
+    - if: '$CI_COMMIT_BRANCH == "prod"'
+      when: always
+    - if: '$CI_COMMIT_BRANCH == "dev"'
+      when: manual
+    - if: '$CI_COMMIT_BRANCH == "qa"'
+      when: manual
+    - if: '$CI_COMMIT_BRANCH == "staging"'
+      when: manual
+  environment:
+    name: $CI_COMMIT_REF_NAME
+    url: http://${VM_IP}:${NODE_PORT}
+#*******************************************************************
+# deploy:
+#   stage: deploy
+#   script:
+#     - echo "Deploying to the $CI_COMMIT_REF_NAME environment"
+#     - helm install gitlab-implement gitlab-task --namespace $CI_COMMIT_REF_NAME --create-namespace
+#     - kubectl get all -n $CI_COMMIT_REF_NAME
+#   rules:
+#     - if: '$CI_COMMIT_BRANCH == "main"'
+#       when: manual
+#     - if: '$CI_COMMIT_BRANCH == "prod"'
+#       when: always
+#     - if: '$CI_COMMIT_BRANCH == "dev"'
+#       when: manual
+#     - if: '$CI_COMMIT_BRANCH == "qa"'
+#       when: manual
+#     - if: '$CI_COMMIT_BRANCH == "staging"'
+#       when: manual
+#********************************************************************
+#   trigger_dev:
+#   stage: trigger
+#   trigger:
+#     project: $CI_PROJECT_PATH
+#     branch: dev
+#   rules:
+#     - if: '$CI_COMMIT_BRANCH == "main"'
+#       when: on_success
+      
+# trigger_qa:
+#   stage: trigger
+#   trigger:
+#     project: $CI_PROJECT_PATH
+#     branch: qa
+#   rules:
+#     - if: '$CI_COMMIT_BRANCH == "main"'
+#       when: on_success
+
+# trigger_staging:
+#   stage: trigger
+#   trigger:
+#     project: $CI_PROJECT_PATH
+#     branch: staging
+#   rules:
+#     - if: '$CI_COMMIT_BRANCH == "main"'
+#       when: on_success
+
+# trigger_prod:
+#   stage: trigger
+#   trigger:
+#     project: $CI_PROJECT_PATH
+#     branch: prod
+#   rules:
+#     - if: '$CI_COMMIT_BRANCH == "main"'
+#       when: on_success
+
+# deploy:
+#   stage: deploy
+#   script:
+#     - echo "Deploying to development environment"
+#     # - echo "$KUBECONFIG_CONTENT" | base64 -d > /etc/rancher/k3s/k3s.yaml
+#     # - export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
+#     # - kubectl config view                    # Display kubeconfig for verification
+#     # - kubectl config current-context         # Show current context for verification
+#     # - kubectl cluster-info                   # Check connection to the Kubernetes API
+#     # - kubectl get nodes                      # Verify cluster node status
+#     #- helm uninstall gitlab-implement -n dev
+
+#     - helm install gitlab-implement gitlab-task --namespace dev --create-namespace
+
+#     - kubectl get all -n dev
+#   only:
+#     - main
+#     - dev
+#   when: manual
+
+
+# stages:
+#   - build
+#   - deploy
+
+# variables:
+#   DOCKER_USERNAME: $DOCKER_USERNAME
+#   DOCKER_PASSWORD: $DOCKER_PASSWORD
+#   IMAGE_TAG: latest
+
+# # Define the default Docker image for the pipeline.
+# image: docker:latest
+
+# services:
+#   - docker:dind  
+
+# # Before script setup for both build and deploy stages
+# before_script:
+#   - apk add --no-cache curl bash jq  # Install necessary tools
+#   - curl -LO "https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl"
+#   - chmod +x kubectl
+#   - mv kubectl /usr/local/bin/
+#   - curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+#   - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
+
+# build:
+#   stage: build
+#   script:
+#     # Build and push Docker images for each service
+#     - docker build -t $DOCKER_USERNAME/k-api-gateway:$IMAGE_TAG ./gateway
+#     - docker build -t $DOCKER_USERNAME/k-users:$IMAGE_TAG ./users
+#     - docker build -t $DOCKER_USERNAME/k-orders:$IMAGE_TAG ./orders
+#     - docker push $DOCKER_USERNAME/k-api-gateway:$IMAGE_TAG
+#     - docker push $DOCKER_USERNAME/k-users:$IMAGE_TAG
+#     - docker push $DOCKER_USERNAME/k-orders:$IMAGE_TAG
+#   only:
+#     - main
+#     - dev
+
+# deploy:
+#   stage: deploy
+#   script:
+#     - echo "Installing required packages"
+#     - apk add --no-cache curl bash jq
+
+#     - echo "Installing kubectl"
+#     - curl -LO "https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl"
+#     - chmod +x kubectl
+#     - mv kubectl /usr/local/bin/
+
+#     - echo "Installing Helm"
+#     - curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+
+#     - echo "Running K3s in a Docker container"
+#     - docker run --privileged --name k3s-server -d -e K3S_TOKEN=my_secret_token -e K3S_CLUSTER_SECRET=my_cluster_secret -p 6443:6443 rancher/k3s:v1.27.0 k3s server --disable-network-policy
+#     - echo "Waiting for K3s to start"
+#     - sleep 15  # Wait for K3s to fully initialize
+
+#     - echo "Checking K3s status"
+#     - kubectl get nodes || (echo "K3s is not running or kubeconfig is not set up"; exit 1)
+
+#     - echo "Setting up kubeconfig for deployment"
+#     - export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
+
+#     # Debugging output to verify kubeconfig contents
+#     - echo "Verifying kubeconfig setup"
+#     - if [ ! -s /etc/rancher/k3s/k3s.yaml ]; then echo "Kubeconfig file is missing or empty"; exit 1; fi
+#     - kubectl config view || (echo "Failed to view kubeconfig"; exit 1)
+#     - kubectl config current-context || (echo "Failed to get current context"; exit 1)
+#     - kubectl cluster-info || (echo "Failed to connect to cluster"; exit 1)
+
+#     - echo "Deploying with Helm"
+#     - helm upgrade --install gitlab-implement gitlab-task --namespace dev --create-namespace || (echo "Helm deployment failed"; exit 1)
+#   only:
+#     - main
+#     - dev

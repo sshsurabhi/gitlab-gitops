@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: orders
+  labels:
+    app: orders
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: orders
+  template:
+    metadata:
+      labels:
+        app: orders
+    spec:
+      containers:
+        - name: orders
+          image: {{ .Values.image.orders }}
+          command: ["sh", "-c", "uvicorn main:app --reload --host 0.0.0.0", "--port", "8000"]
+          ports:
+            - containerPort: {{ .Values.service.ordersPort }}
+          volumeMounts:
+            - mountPath: /app
+              name: orders-volume
+      volumes:
+        - name: orders-volume
+          persistentVolumeClaim:
+            claimName: orders-pvc
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: orders-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
