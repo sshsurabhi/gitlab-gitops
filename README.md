@@ -48,7 +48,17 @@
 
 
 ##Diagram
-![ScreenShot](https://github.com/DataScientest/gitlab_devops_exams/blob/main/diagram.png)
+![ScreenShot](https://github.com/sshsurabhi/gitlab-gitops/blob/master/diagram.png)
+
+![ScreenShot](https://github.com/sshsurabhi/gitlab-gitops/blob/master/images-implementation/gitlab-1.png)
+
+![ScreenShot](https://github.com/sshsurabhi/gitlab-gitops/blob/master/images-implementation/gitlab-2.png)
+
+![ScreenShot](https://github.com/sshsurabhi/gitlab-gitops/blob/master/images-implementation/gitlab-5.png)
+
+![ScreenShot](https://github.com/sshsurabhi/gitlab-gitops/blob/master/images-implementation/gitlab-8.png)
+
+![ScreenShot](https://github.com/sshsurabhi/gitlab-gitops/blob/master/images-implementation/gitlab-7.png)
 
 ##Documentation Page
-![ScreenShot](https://github.com/DataScientest/gitlab_devops_exams/blob/main/docs.png)
+![ScreenShot](https://github.com/sshsurabhi/gitlab-gitops/blob/master/images-implementation/gitlab-9.png)
