@@ -1,10 +1,8 @@
-# PROJET GITLAB
+# GITLAB PROJECT including GITOPS
 
-## refer my gitlab repository for further reference
+# Refer my [Gitlab Project](https://gitlab.com/SaiSriHarsha/gitlab-devops) repository for other reference
 
-[Gitlab Project](https://gitlab.com/SaiSriHarsha/gitlab-devops)
-
-# Microservices, API Gateway, Authentification with FastAPI
+# Microservices, API Gateway, Authentification with FastAPI (K8S HELM CHARTS)
 
 - This repository is composed of a set of small microservices taking into account the API gateway approach.
 - The planned number of microservices was two, but given that the services must not create dependencies on each other to prevent SPOF, also to avoid duplicate code, I decided to put an api gateway in front that does JWT authentication for the two services I'm inspired by Netflix/Zuul
