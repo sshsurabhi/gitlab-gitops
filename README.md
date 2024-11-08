@@ -1,6 +1,8 @@
 # PROJET GITLAB
 
-# refer my gitlab repository for further reference
+## refer my gitlab repository for further reference
+
+[Gitlab Project](https://gitlab.com/SaiSriHarsha/gitlab-devops)
 
 # Microservices, API Gateway, Authentification with FastAPI
 
